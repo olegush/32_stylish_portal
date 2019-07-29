@@ -13,26 +13,36 @@ sudo apt install nginx
 
 Goto http://127.0.0.1/ where you'll see welcome nginx page, if you don't, explore **/var/log/nginx/error.log** and **/var/log/nginx/access.log**. To reload server use `sudo nginx -s reload`.
 
-2. Create config files and copy text from repository inside:
+2. Copy files from repository to local
+
+3. **nginx.conf.template** file has two server blocks for proxying two sites. You can add or delete blocks if you need.
+
+4. Create local css files to replace.
+
+4. Create bash script, **run.sh**, for instance and put inside variables for template, bash commands and paths:
+
 ```bash
-sudo nano /etc/nginx/sites-available/site1.conf
-sudo nano /etc/nginx/sites-available/site2.conf
+#!/usr/bin/env bash
+export PORT1=port1
+export SITE1=url1
+export CSS_FILE1=css_filename1
+export CSS_ALIAS_FILE1=abs/path/to/local.css1
+export PORT1=port2
+export SITE1=url2
+export CSS_FILE1=css_filename2
+export CSS_ALIAS_FILE1=abs/path/to/local.css2
+envsubst < nginx.conf.template > nginx.conf
+sudo ln -sf abs/path/to/created/nginx.conf /etc/nginx/sites-enabled
+nginx -g 'daemon off;'
 ```
 
-3. Create symlinks:
+5. Run script:
 ```bash
-sudo ln -sf /etc/nginx/sites-available/site1.conf /etc/nginx/sites-enabled
-sudo ln -sf /etc/nginx/sites-available/site2.conf /etc/nginx/sites-enabled
+sudo run.sh
 ```
+The script creates **nginx.conf** based on **nginx.conf.template** with exported variables, creates symlink to nginx **sites-enabled** directory and reloads nginx.
 
-4. Create new css files with new styles according paths in the config files
-
-5. Reload nginx:
-```bash
-sudo nginx -s reload
-```
-
-6. Goto http://127.0.0.1:8081 or http://127.0.0.1:8082 and enjoy your new stylish sites.
+6. Goto http://127.0.0.1:port1 or http://127.0.0.1:port2 and enjoy your new stylish sites.
 
 
 # Project Goals

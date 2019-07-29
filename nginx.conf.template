@@ -1,0 +1,24 @@
+server {
+      listen ${PORT1};
+      server_name localhost;
+
+      location / {
+        proxy_pass ${SITE1};
+      }
+
+      location  ~* ${CSS_FILE1} {
+        alias ${CSS_ALIAS_FILE1};
+      }
+}
+server {
+      listen ${PORT2};
+      server_name localhost;
+
+      location / {
+        proxy_pass ${SITE2};
+      }
+
+      location  ~* ${CSS_FILE2} {
+        alias ${CSS_ALIAS_FILE2};
+      }
+}

@@ -58,7 +58,8 @@ docs/_build/
 # PyBuilder
 target/
 
-info
+dist
 css
 data
 static
+run.sh
